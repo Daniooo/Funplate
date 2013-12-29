@@ -90,7 +90,7 @@ function Funplate(options){
         data:       options.data      || {},
         source:     options.source    || 'json',
         update:     options.update    || false,
-        interval:   options.intervall || 10,
+        interval:   options.interval  || 10,
         fallback:   options.fallback  || null
     };
     
