@@ -20,20 +20,49 @@
  * IN THE SOFTWARE.
  *********************************************************************/
 
-funplate = {
-    init: function(){
-        this.log('funplate init called', 1);
-    },
-    
-    log: function(msg, lvl){
-        if(window.console) {
-            switch(lvl) {
-                default:
-                case 0: console.log(msg); break;
-                case 1: console.info(msg); break;
-                case 2: console.warn(msg); break;
-                case 3: console.error(msg); break;
+function Log(){
+
+    var messageQue = [];
+
+    return {
+
+        info: function( msg ){
+
+            messageQue.push( {message: msg, level: 'info'} );
+        },
+
+        debug: function( msg ) {
+            messageQue.push( {message: msg, level: 'debug'} );
+        },
+
+        warn: function( msg ) {
+            messageQue.push( {message: msg, level: 'warn'} );
+        },
+
+        error: function( msg ){
+            messageQue.push( {message: msg, level: 'error'} );
+        },
+
+
+        go: function(){
+
+            if ( messageQue ) {
+
+                for ( var i in messageQue ){
+
+                    console[messageQue[i].level]( messageQue[i].message );
+                }
             }
         }
+    };
+}
+
+var log = new Log();
+
+
+var funplate = {
+    
+    init: function(){
+        log.info("funplate initialized. lets go...");
     }
 };
