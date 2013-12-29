@@ -18,7 +18,14 @@
 
         <script type="text/javascript">
             
+            var funplate = new Funplate({
+                target: "test",
+                template: "test",
+                interval: 100
+            });
+
             funplate.init();
+            log.info(funplate.config);
             log.go();
         </script>
 

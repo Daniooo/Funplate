@@ -1,6 +1,6 @@
 /**********************************************************************
- * Copyright (c) 2013 Holger Szuesz, <hszuesz@live.com>,
- *                    Daniel Togelang, <daniel@togelang.de>
+ * Copyright (c) 2013 Holger Szuesz, <hszuesz@live.com>
+ * Copyright (c) 2013 Daniel Togelang, <daniel@togelang.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -33,7 +33,6 @@ function Log(){
             console[msg.level]( msg.message );
         }
     };
-
 
     return {
 
@@ -69,12 +68,13 @@ function Log(){
                 for ( var i in messageQue ){
 
                     if ( !outputs.length ) {
-                        outputs.push(defaultConsoleOutput);
+
+                        outputs.push( defaultConsoleOutput );
                     }
 
                     for ( var j in outputs ) {
 
-                        outputs[j](messageQue[i]);
+                        outputs[j]( messageQue[i] );
                     }
                 }
             }
@@ -82,11 +82,37 @@ function Log(){
     };
 }
 
+function Funplate(options){
+    
+    var config = {
+        target:     options.target    || null,
+        template:   options.template  || null,
+        data:       options.data      || {},
+        source:     options.source    || 'json',
+        update:     options.update    || false,
+        interval:   options.intervall || 10,
+        fallback:   options.fallback  || null
+    };
+    
+    return {
+
+        config: config,
+        
+        init: function(){
+            log.info("funplate initialized. lets go...");
+        },
+        
+        plot: function(){
+            log.info("Try to plot template...");
+        }
+    };
+};
+
 var alertBox = function( msg ){
-    if (msg.level === 'info'){ alert("info: " + msg.message)};
-    if (msg.level === 'debug'){ alert("debug: " + msg.message)};
-    if (msg.level === 'warn'){ alert("warn: " + msg.message)};
-    if (msg.level === 'error'){ alert("error: " + msg.message)};
+    if (msg.level === 'info'){ alert("info: " + msg.message);};
+    if (msg.level === 'debug'){ alert("debug: " + msg.message);};
+    if (msg.level === 'warn'){ alert("warn: " + msg.message);};
+    if (msg.level === 'error'){ alert("error: " + msg.message);};
 };
 
 var smsLogger = function( msg ){
@@ -96,16 +122,6 @@ var smsLogger = function( msg ){
 };
 
 var log = new Log();
-log.add(alertBox);
-log.add(smsLogger);
+// log.add(alertBox);
+// log.add(smsLogger);
 // log.disable();
-
-
-
-var funplate = {
-    
-    init: function(){
-        log.info("funplate initialized. lets go...");
-        log.error("holy moly there goes what ;)");
-    }
-};
