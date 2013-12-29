@@ -23,6 +23,15 @@
 function Log(){
 
     var messageQue = [];
+    var outputs = [];
+
+    var defaultConsoleOutput = function( msg ){
+
+        if (window.console){
+            console[msg.level]( msg.message );
+        }
+    };
+
 
     return {
 
@@ -43,6 +52,9 @@ function Log(){
             messageQue.push( {message: msg, level: 'error'} );
         },
 
+        add: function( output ){
+            outputs.push( output );
+        },
 
         go: function(){
 
@@ -50,14 +62,32 @@ function Log(){
 
                 for ( var i in messageQue ){
 
-                    console[messageQue[i].level]( messageQue[i].message );
+                    if ( !outputs.length ) {
+                        outputs.push(defaultConsoleOutput);
+                    }
+
+                    for ( var j in outputs ) {
+
+                        outputs[j](messageQue[i]);
+                    }
                 }
             }
         }
     };
 }
 
+var alertBox = function( msg ){
+    if (msg.level === 'info'){ alert("info: " + msg.message)};
+    if (msg.level === 'debug'){ alert("debug: " + msg.message)};
+    if (msg.level === 'warn'){ alert("warn: " + msg.message)};
+    if (msg.level === 'error'){ alert("error: " + msg.message)};
+};
+
 var log = new Log();
+log.add(alertBox);
+
+
+
 
 
 var funplate = {
