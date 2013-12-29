@@ -32,7 +32,6 @@ function Log(){
         }
     };
 
-
     return {
 
         info: function( msg ){
@@ -76,23 +75,37 @@ function Log(){
     };
 }
 
+function Funplate(c){
+    
+    var defaultConf = {
+        target: undefined,
+        template: undefined,
+        data: {},
+        source: 'json',
+        update: false,
+        interval: 10,
+        fallback: undefined
+    };
+    
+    return {
+        conf: defaultConf,
+        
+        init: function(){
+            log.info("funplate initialized. lets go...");
+        },
+        
+        plot: function(){
+            log.info("Try to plot template...")
+        }
+    };
+};
+
 var alertBox = function( msg ){
-    if (msg.level === 'info'){ alert("info: " + msg.message)};
-    if (msg.level === 'debug'){ alert("debug: " + msg.message)};
-    if (msg.level === 'warn'){ alert("warn: " + msg.message)};
-    if (msg.level === 'error'){ alert("error: " + msg.message)};
+    if (msg.level === 'info'){ alert("info: " + msg.message);};
+    if (msg.level === 'debug'){ alert("debug: " + msg.message);};
+    if (msg.level === 'warn'){ alert("warn: " + msg.message);};
+    if (msg.level === 'error'){ alert("error: " + msg.message);};
 };
 
 var log = new Log();
 log.add(alertBox);
-
-
-
-
-
-var funplate = {
-    
-    init: function(){
-        log.info("funplate initialized. lets go...");
-    }
-};
