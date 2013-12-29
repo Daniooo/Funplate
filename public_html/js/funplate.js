@@ -1,5 +1,6 @@
 /**********************************************************************
- * Copyright (c) 2013 Holger Szuesz, <hszuesz@live.com>
+ * Copyright (c) 2013 Holger Szuesz, <hszuesz@live.com>,
+ *                    Daniel Togelang, <daniel@togelang.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -22,6 +23,7 @@
 
 function Log(){
 
+    var enabled = true;
     var messageQue = [];
     var outputs = [];
 
@@ -56,9 +58,13 @@ function Log(){
             outputs.push( output );
         },
 
+        disable: function(){
+            enabled = false;
+        },
+
         go: function(){
 
-            if ( messageQue ) {
+            if ( messageQue && enabled ) {
 
                 for ( var i in messageQue ){
 
@@ -83,10 +89,16 @@ var alertBox = function( msg ){
     if (msg.level === 'error'){ alert("error: " + msg.message)};
 };
 
+var smsLogger = function( msg ){
+    if (msg.level === "error" ) {
+        alert("Sending SMS with following content: " + msg.message );
+    }
+};
+
 var log = new Log();
 log.add(alertBox);
-
-
+log.add(smsLogger);
+// log.disable();
 
 
 
@@ -94,5 +106,6 @@ var funplate = {
     
     init: function(){
         log.info("funplate initialized. lets go...");
+        log.error("holy moly there goes what ;)");
     }
 };
