@@ -47,6 +47,18 @@ var helper = {
 
     isntEmpty: function( obj ) {
         return !this.isEmpty( obj );
+    },
+    
+    $_GET: function(name) {
+        var p,t,r=/[?&]?([^=]+)=([^&]*)/g;
+        while(t=r.exec(document.location.search.split("+").join(" "))) {
+            if(t[1]==name){p=decodeURIComponent(t[2]);}
+        }
+        return p;
+    },
+    
+    str_replace: function(search, replace, searchstring) {
+        return searchstring.split(search).join(replace);
     }
 };
 
