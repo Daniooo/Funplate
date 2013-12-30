@@ -21,69 +21,9 @@
  * IN THE SOFTWARE.
  *********************************************************************/
 
-function Log(){
-
-    var enabled = true;
-    var messageQue = [];
-    var outputs = [];
-
-    var defaultConsoleOutput = function( msg ){
-
-        if (window.console){
-            console[msg.level]( msg.message );
-        }
-    };
-
-    return {
-
-        info: function( msg ){
-
-            messageQue.push( {message: msg, level: 'info'} );
-        },
-
-        debug: function( msg ) {
-            messageQue.push( {message: msg, level: 'debug'} );
-        },
-
-        warn: function( msg ) {
-            messageQue.push( {message: msg, level: 'warn'} );
-        },
-
-        error: function( msg ){
-            messageQue.push( {message: msg, level: 'error'} );
-        },
-
-        add: function( output ){
-            outputs.push( output );
-        },
-
-        disable: function(){
-            enabled = false;
-        },
-
-        go: function(){
-
-            if ( messageQue && enabled ) {
-
-                for ( var i in messageQue ){
-
-                    if ( !outputs.length ) {
-
-                        outputs.push( defaultConsoleOutput );
-                    }
-
-                    for ( var j in outputs ) {
-
-                        outputs[j]( messageQue[i] );
-                    }
-                }
-            }
-        }
-    };
-}
-
-function Funplate(options){
+function Funplate( options ){
     
+    // default configuration for the funplate object.
     var config = {
         target:     options.target    || null,
         template:   options.template  || null,
@@ -93,15 +33,58 @@ function Funplate(options){
         interval:   options.interval  || 10,
         fallback:   options.fallback  || null
     };
-    
+
+
+    // public interface.
     return {
 
         config: config,
-        
+
+        // set a new target or use the default one.
+        target: function( domElement ){
+
+            // TODO: remove jQuery dependency
+            if ( $(domElement).length ){
+                config.target = domElement;
+            }
+
+            if ( !$(config.target).length ) {
+                log.error("Excuse me Master, you should use a valid target to render your data."); 
+                log.error(config.target + " not found."); 
+            }
+            
+            return this;            
+        },
+
+        template: function( template ){
+
+        },
+
+        data: function( dataObject ){
+            
+            if ( dataObject ){
+                config.data = dataObject;
+            }
+
+            return this;
+        },
+
+        render: function(){
+
+            // TODO: remove jQuery dependency
+            $( config.target ).html( config.data );
+
+        },
+
+        // what is this needed for?
         init: function(){
+            // initially hide all funplates?
+            //$("div[data-template").hide();
+
             log.info("funplate initialized. lets go...");
         },
         
+        // what is this needed for?
         plot: function(){
             log.info("Try to plot template...");
         }
