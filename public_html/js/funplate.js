@@ -21,6 +21,35 @@
  * IN THE SOFTWARE.
  *********************************************************************/
 
+var helper = {
+
+    // checking the DataTypes
+    // String, Number, Boolean, Array, Object, Null, Undefined
+    type: function( obj ){
+
+        if (obj === null) return 'null';
+        if (typeof obj === 'undefined') return 'undefined';
+        if (typeof obj === 'string') return 'string';
+        if (typeof obj === 'boolean') return 'boolean';
+        if (typeof obj === 'number') return 'number';
+        if (obj instanceof Array ) return 'array';
+        if (typeof obj === 'object') return 'object';
+    
+    },
+
+    isEmpty: function( obj ){
+        if ( this.type( obj ) === 'undefined' ) return true;
+        if ( this.type( obj ) === 'string' && obj == '' ) return true;
+        if ( this.type( obj ) === 'array' && obj.length == 0 ) return true;
+
+        return false;
+    },
+
+    isntEmpty: function( obj ) {
+        return !this.isEmpty( obj );
+    }
+};
+
 function Funplate( options ){
     
     // default configuration for the funplate object.
@@ -62,6 +91,10 @@ function Funplate( options ){
 
         data: function( dataObject ){
             
+            log.debug(typeof dataObject);
+
+
+
             if ( dataObject ){
                 config.data = dataObject;
             }
