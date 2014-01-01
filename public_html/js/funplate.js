@@ -102,6 +102,8 @@ function Funplate( options ){
         language:   options.language  || 'en'
     };
 
+    var _template;
+    var _filledTemplate;
 
     // public interface.
     return {
@@ -126,6 +128,17 @@ function Funplate( options ){
 
         template: function( template ){
 
+            var _template = $("[data-template=" + template +"]")[0].innerHTML;
+
+
+            log.debug( _template.replace('{{item}}', 'foo') );
+
+            _filledTemplate = _template.replace('{{item}}', 'foo');
+
+
+
+
+            return this;
         },
 
         data: function( dataObject ){
@@ -145,6 +158,8 @@ function Funplate( options ){
 
             // TODO: remove jQuery dependency
             $( config.target ).html( config.data );
+
+            $( config.target ).replaceWith( _filledTemplate );
 
         },
 
