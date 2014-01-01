@@ -21,6 +21,22 @@
  * IN THE SOFTWARE.
  *********************************************************************/
 
+
+var log = new Log();
+// log.add(alertBox);
+// log.add(smsLogger);
+// log.disable();
+
+var i11n = {
+    de : {
+        invalidTarget: 'Entschuldige Meister, du must ein valides Ziel zum Rendern der Daten auswählen.'
+    },
+
+    en: {
+        invalidTarget: 'Excuse me Master, you should use a valid target to render your data.'
+    }
+};
+
 var helper = {
 
     // checking the DataTypes
@@ -51,15 +67,25 @@ var helper = {
     
     $_GET: function(name) {
         var p,t,r=/[?&]?([^=]+)=([^&]*)/g;
-        while(t=r.exec(document.location.search.split("+").join(" "))) {
-            if(t[1]==name){p=decodeURIComponent(t[2]);}
+        while ( t = r.exec( document.location.search.split("+").join(" ")) ){
+            if ( t[1]==name ) p = decodeURIComponent( t[2] );
         }
         return p;
     },
     
-    str_replace: function(search, replace, searchstring) {
-        return searchstring.split(search).join(replace);
-    }
+    strReplace: function( search, replace, searchstring ){
+        return searchstring.split( search ).join( replace );
+    },
+
+    i11n: function( string ){
+        return i11n[this.language][string];
+    },
+
+    language: function(){
+
+        var browserLanguage = navigator.language || navigator.userLanguage; 
+        return browserLanguage.slice(0,2) || 'en';
+    }()
 };
 
 function Funplate( options ){
@@ -72,7 +98,8 @@ function Funplate( options ){
         source:     options.source    || 'json',
         update:     options.update    || false,
         interval:   options.interval  || 10,
-        fallback:   options.fallback  || null
+        fallback:   options.fallback  || null,
+        language:   options.language  || 'en'
     };
 
 
@@ -89,9 +116,9 @@ function Funplate( options ){
                 config.target = domElement;
             }
 
-            if ( !$(config.target).length ) {
-                log.error("Excuse me Master, you should use a valid target to render your data."); 
-                log.error(config.target + " not found."); 
+            if ( !$( config.target ).length ) {
+                log.error( helper.i11n( 'invalidTarget' )); 
+                log.error( config.target + " not found." );
             }
             
             return this;            
@@ -103,7 +130,7 @@ function Funplate( options ){
 
         data: function( dataObject ){
             
-            log.debug(typeof dataObject);
+            log.debug( typeof dataObject );
 
 
 
@@ -148,8 +175,3 @@ var smsLogger = function( msg ){
         alert("Sending SMS with following content: " + msg.message );
     }
 };
-
-var log = new Log();
-// log.add(alertBox);
-// log.add(smsLogger);
-// log.disable();
